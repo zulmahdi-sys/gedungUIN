@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - UIN Ar-Raniry</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --sidebar-width: 260px;
+        }
+
+        body {
+            background-color: #f3f4f6;
+            display: block;
+            /* Override center display from login if inherited */
+        }
+
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            padding: 0 0.5rem;
+        }
+
+        .sidebar-brand img {
+            height: 40px;
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .sidebar-footer {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn {
+            width: 100%;
+            justify-content: flex-start;
+            background: none;
+            color: #fca5a5;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+        }
+
+        /* Main Content Styles */
+        .main-wrapper {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        /* Card & Table Styles */
+        .admin-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: var(--bg-surface);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .btn-delete:hover {
+            color: #ef4444;
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        /* Form Styles in Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+        }
+
+        /* Badges */
+        .status-badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-confirmed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="images/logo-uin.png" alt="Logo">
+                <span>Admin Panel</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <div class="nav-link active" onclick="showSection('gedung')">
+                        <i class="ph ph-buildings"></i> Manajemen Gedung
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('booking')">
+                        <i class="ph ph-calendar-check"></i> Daftar Booking
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('pengguna')">
+                        <i class="ph ph-users"></i> Pengguna
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-link" onclick="showSection('pengaturan')">
+                        <i class="ph ph-gear"></i> Pengaturan
+                    </div>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="btn nav-link logout-btn" onclick="handleLogout()">
+                    <i class="ph ph-sign-out"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-wrapper">
+
+            <!-- SECTION: GEDUNG -->
+            <section id="section-gedung" class="view-section active">
+                <div class="dashboard-header">
+                    <h2>Manajemen Gedung</h2>
+                    <button class="btn btn-primary" onclick="openModal('modalGedung')">
+                        <i class="ph ph-plus"></i> Tambah Gedung
+                    </button>
+                </div>
+
+                <div class="admin-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nama Gedung</th>
+                                <th>Kapasitas</th>
+                                <th>Fasilitas Utama</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gedungTableBody">
+                            <!-- Data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION: BOOKING -->
+            <section id="section-booking" class="view-section">
+                <div class="dashboard-header">
+                    <h2>Daftar Booking</h2>
+                </div>
+
+                <div class="admin-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nama Pemohon</th>
+                                <th>Gedung</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingTableBody">
+                            <!-- Data populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION: PENGGUNA -->
+            <section id="section-pengguna" class="view-section">
+                <div class="dashboard-header">
+                    <h2>Manajemen Pengguna</h2>
+                    <button class="btn btn-primary">Tambah User</button>
+                </div>
+                <div class="admin-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Terakhir Login</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Administrator</td>
+                                <td>admin@ar-raniry.ac.id</td>
+                                <td>Super Admin</td>
+                                <td>Hari ini, 10:45</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION: PENGATURAN -->
+            <section id="section-pengaturan" class="view-section">
+                <div class="dashboard-header">
+                    <h2>Pengaturan Sistem</h2>
+                </div>
+                <div class="admin-card">
+                    <form id="settingsForm">
+                        <div class="form-group">
+                            <label>Nama Situs</label>
+                            <input type="text" name="siteName" value="UIN Ar-Raniry Building Management">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Kontak</label>
+                            <input type="email" name="contactEmail" value="biro.umum@ar-raniry.ac.id">
+                        </div>
+                        <div class="form-group">
+                            <label>Aktifkan Fitur Booking</label>
+                            <select name="activeBooking">
+                                <option value="true">Ya, Aktif</option>
+                                <option value="false">Tidak, Matikan Sementara</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL: TAMBAH/EDIT GEDUNG -->
+    <div id="modalGedung" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Form Gedung</h3>
+                <span class="close-modal" onclick="closeModal('modalGedung')">&times;</span>
+            </div>
+            <form id="gedungForm">
+                <input type="hidden" id="gedungId">
+                <div class="form-group">
+                    <label>Nama Gedung</label>
+                    <input type="text" id="gedungNama" required>
+                </div>
+                <div class="form-group">
+                    <label>Kapasitas (Orang)</label>
+                    <input type="number" id="gedungKapasitas" required>
+                </div>
+                <div class="form-group">
+                    <label>Fasilitas Utama</label>
+                    <input type="text" id="gedungFasilitas" placeholder="Contoh: AC, Sound System, Proyektor">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Simpan Data</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // AUTH CHECK
+        if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isAdminLoggedIn');
+            window.location.href = 'login.html';
+        }
+
+        // NAVIGATION LOGIC
+        function showSection(sectionId) {
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+            document.getElementById('section-' + sectionId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // DATA STORE INITIALIZATION (LocalStorage)
+        const initData = () => {
+            if (!localStorage.getItem('gedungData')) {
+                const initialGedung = [
+                    { id: Date.now(), nama: 'Auditorium Ali Hasjmy', kapasitas: 2000, fasilitas: 'AC, Sound System, VIP Room', status: 'Aktif' },
+                    { id: Date.now() + 1, nama: 'Gedung ICT Center', kapasitas: 200, fasilitas: 'Laboratorium, Internet, AC', status: 'Aktif' }
+                ];
+                localStorage.setItem('gedungData', JSON.stringify(initialGedung));
+            }
+
+            if (!localStorage.getItem('bookingData')) {
+                const initialBooking = [
+                    { id: 101, pemohon: 'UKM Seni', gedung: 'Gedung PKM', tanggal: '2025-12-28', status: 'Pending' }
+                ];
+                localStorage.setItem('bookingData', JSON.stringify(initialBooking));
+            }
+        };
+
+        // UI RENDERING
+        const renderGedung = () => {
+            const data = JSON.parse(localStorage.getItem('gedungData') || '[]');
+            const tableBody = document.getElementById('gedungTableBody');
+            tableBody.innerHTML = data.map(g => `
+                <tr>
+                    <td><strong>${g.nama}</strong></td>
+                    <td>${g.kapasitas} Orang</td>
+                    <td>${g.fasilitas}</td>
+                    <td><span class="status-badge status-confirmed">${g.status}</span></td>
+                    <td class="action-btns">
+                        <button class="btn-icon" onclick="editGedung(${g.id})"><i class="ph ph-pencil"></i></button>
+                        <button class="btn-icon btn-delete" onclick="deleteGedung(${g.id})"><i class="ph ph-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        };
+
+        const renderBooking = () => {
+            const data = JSON.parse(localStorage.getItem('bookingData') || '[]');
+            const tableBody = document.getElementById('bookingTableBody');
+            tableBody.innerHTML = data.map(b => `
+                <tr>
+                    <td>${b.pemohon}</td>
+                    <td>${b.gedung}</td>
+                    <td>${b.tanggal}</td>
+                    <td><span class="status-badge status-${b.status.toLowerCase()}">${b.status}</span></td>
+                    <td class="action-btns">
+                        <button class="btn-icon" onclick="updateBookingStatus(${b.id}, 'Confirmed')"><i class="ph ph-check"></i></button>
+                        <button class="btn-icon btn-delete" onclick="updateBookingStatus(${b.id}, 'Rejected')"><i class="ph ph-x"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        };
+
+        // CRUD ACTIONS: GEDUNG
+        document.getElementById('gedungForm').onsubmit = (e) => {
+            e.preventDefault();
+            const id = document.getElementById('gedungId').value;
+            const nama = document.getElementById('gedungNama').value;
+            const kapasitas = document.getElementById('gedungKapasitas').value;
+            const fasilitas = document.getElementById('gedungFasilitas').value;
+
+            const currentData = JSON.parse(localStorage.getItem('gedungData') || '[]');
+
+            if (id) {
+                // Update
+                const index = currentData.findIndex(g => g.id == id);
+                currentData[index] = { id: Number(id), nama, kapasitas, fasilitas, status: 'Aktif' };
+            } else {
+                // Create
+                currentData.push({ id: Date.now(), nama, kapasitas, fasilitas, status: 'Aktif' });
+            }
+
+            localStorage.setItem('gedungData', JSON.stringify(currentData));
+            closeModal('modalGedung');
+            renderGedung();
+            e.target.reset();
+        };
+
+        const deleteGedung = (id) => {
+            if (confirm('Hapus gedung ini?')) {
+                const data = JSON.parse(localStorage.getItem('gedungData')).filter(g => g.id != id);
+                localStorage.setItem('gedungData', JSON.stringify(data));
+                renderGedung();
+            }
+        };
+
+        const editGedung = (id) => {
+            const data = JSON.parse(localStorage.getItem('gedungData')).find(g => g.id == id);
+            document.getElementById('gedungId').value = data.id;
+            document.getElementById('gedungNama').value = data.nama;
+            document.getElementById('gedungKapasitas').value = data.kapasitas;
+            document.getElementById('gedungFasilitas').value = data.fasilitas;
+            openModal('modalGedung');
+        };
+
+        // ACTIONS: BOOKING
+        const updateBookingStatus = (id, newStatus) => {
+            const data = JSON.parse(localStorage.getItem('bookingData'));
+            const index = data.findIndex(b => b.id == id);
+            if (index > -1) {
+                data[index].status = newStatus;
+                localStorage.setItem('bookingData', JSON.stringify(data));
+                renderBooking();
+            }
+        };
+
+        // MODAL HELPERS
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.getElementById('gedungForm').reset();
+            document.getElementById('gedungId').value = '';
+        }
+
+        // INIT
+        window.onload = () => {
+            initData();
+            renderGedung();
+            renderBooking();
+        };
+    </script>
+</body>
+
+</html>

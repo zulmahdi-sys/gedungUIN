@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Gedung UIN Ar-Raniry</title>
+    <meta name="description" content="Sistem penjadwalan dan peminjaman gedung UIN Ar-Raniry secara real-time.">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons (Phosphor Icons for a clean look similar to reference) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container navbar-content">
+            <a href="#" class="brand">
+                <div class="brand-logo">
+                    <img src="images/logo-uin.png" alt="Logo UIN">
+                </div>
+                <span>UIN Ar-Raniry <br><small>Building Management</small></span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#beranda" class="active">Beranda</a>
+                <a href="#jadwal">Jadwal</a>
+                <a href="#fasilitas">Fasilitas</a>
+                <a href="#kontak">Kontak</a>
+            </nav>
+
+            <a href="login.html" class="btn btn-outline">
+                Login Admin
+                <i class="ph ph-arrow-right"></i>
+            </a>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="beranda" class="hero">
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <div class="badge">✨ Sistem Terintegrasi Web 2025</div>
+                    <h1>Digitalisasi Manajemen <span class="highlight">Aset & Gedung</span> Kampus</h1>
+                    <p>Platform terpusat untuk pengecekan jadwal, peminjaman ruangan, dan pengelolaan fasilitas di
+                        lingkungan UIN Ar-Raniry Banda Aceh. Transparan, Cepat, dan Real-time.</p>
+                    <div class="hero-actions">
+                        <a href="#jadwal" class="btn btn-primary">Cek Ketersediaan</a>
+                        <a href="#tutorial" class="btn btn-text">
+                            <i class="ph ph-play-circle"></i> Cara Booking
+                        </a>
+                    </div>
+
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <strong>15+</strong> Gedung
+                        </div>
+                        <div class="stat-item">
+                            <strong>50+</strong> Aula & Ruang
+                        </div>
+                        <div class="stat-item">
+                            <strong>24/7</strong> Akses Sistem
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <!-- Floating Schedule Card Effect -->
+                    <div class="glass-card schedule-card">
+                        <div class="card-header">
+                            <div>
+                                <h3>Jadwal Hari Ini</h3>
+                                <p class="date">Sabtu, 27 Des 2025</p>
+                            </div>
+                            <div class="status-dot live">Live</div>
+                        </div>
+                        <div class="schedule-list">
+                            <div class="schedule-item">
+                                <div class="time">08:00 - 12:00</div>
+                                <div class="event-details">
+                                    <h4>Sidang Tertutup Senat</h4>
+                                    <p>Auditorium Ali Hasjmy</p>
+                                </div>
+                                <span class="tag busy">Sedang Berlangsung</span>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="time">13:30 - 16:00</div>
+                                <div class="event-details">
+                                    <h4>Workshop IT Multimedia</h4>
+                                    <p>Lab Komputer ICT</p>
+                                </div>
+                                <span class="tag upcoming">Akan Datang</span>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="time">16:00 - 18:00</div>
+                                <div class="event-details">
+                                    <h4>Latihan UKM Seni</h4>
+                                    <p>Gedung PKM Lt. 2</p>
+                                </div>
+                                <span class="tag upcoming">Akan Datang</span>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a href="#">Lihat Semua Jadwal <i class="ph ph-caret-right"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Decorative blurred shapes -->
+                    <div class="blob blob-1"></div>
+                    <div class="blob blob-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features/Fasilitas Section -->
+        <section id="fasilitas" class="features">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="eyebrow">FASILITAS & GEDUNG</span>
+                    <h2>Daftar Gedung UIN Ar-Raniry</h2>
+                    <p>Pilih fasilitas yang sesuai dengan kebutuhan acara Anda.</p>
+                </div>
+
+                <div class="features-grid" id="fasilitasGrid">
+                    <!-- Data will be populated by script.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="eyebrow">TESTIMONI</span>
+                    <h2>Dipercaya Civitas Akademika</h2>
+                </div>
+
+                <div class="testimonial-slider">
+                    <button class="slider-btn prev-btn"><i class="ph ph-caret-left"></i></button>
+
+                    <div class="slider-track-container">
+                        <ul class="slider-track">
+                            <li class="slide current-slide">
+                                <div class="testimonial-card">
+                                    <div class="quote-icon"><i class="ph ph-quotes"></i></div>
+                                    <p class="quote-text">"Sistem ini sangat membantu meminimalisir bentrok jadwal
+                                        penggunaan aula. Proses booking jadi transparan dan cepat."</p>
+                                    <div class="author">
+                                        <img src="https://ui-avatars.com/api/?name=Ahmad+Fauzi&background=1a5f4f&color=fff"
+                                            alt="User">
+                                        <div>
+                                            <strong>Dr. Ahmad Fauzi, M.Pd</strong>
+                                            <span>Kepala Biro AUK</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="slide">
+                                <div class="testimonial-card">
+                                    <div class="quote-icon"><i class="ph ph-quotes"></i></div>
+                                    <p class="quote-text">"Sangat memudahkan kami dari organisasi mahasiswa untuk
+                                        mencari tempat kegiatan tanpa harus bolak-balik surat manual."</p>
+                                    <div class="author">
+                                        <img src="https://ui-avatars.com/api/?name=Siti+Aminah&background=e6b00f&color=fff"
+                                            alt="User">
+                                        <div>
+                                            <strong>Siti Aminah</strong>
+                                            <span>Ketua DEMA UIN</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="slide">
+                                <div class="testimonial-card">
+                                    <div class="quote-icon"><i class="ph ph-quotes"></i></div>
+                                    <p class="quote-text">"Tampilan modern dan mudah digunakan bahkan di HP. Fitur
+                                        jadwal real-time nya sangat akurat."</p>
+                                    <div class="author">
+                                        <img src="https://ui-avatars.com/api/?name=Rahmat+Hidayat&background=1f2937&color=fff"
+                                            alt="User">
+                                        <div>
+                                            <strong>Rahmat Hidayat</strong>
+                                            <span>Dosen FTK</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button class="slider-btn next-btn"><i class="ph ph-caret-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Section -->
+        <section class="info-section">
+            <div class="container info-grid">
+                <div class="info-content">
+                    <h2>Mendukung Kegiatan Akademik & Non-Akademik</h2>
+                    <p>Sistem ini dirancang untuk memfasilitasi seluruh civitas akademika UIN Ar-Raniry, mulai dari
+                        perkuliahan umum, seminar, hingga kegiatan organisasi mahasiswa.</p>
+                    <ul class="check-list">
+                        <li><i class="ph ph-check-circle"></i> Transparansi Jadwal</li>
+                        <li><i class="ph ph-check-circle"></i> Persetujuan Berjenjang Digital</li>
+                        <li><i class="ph ph-check-circle"></i> Notifikasi Status Booking</li>
+                    </ul>
+                </div>
+                <div class="info-visual">
+                    <div class="stat-card-large">
+                        <div class="number">98%</div>
+                        <div class="label">Kepuasan Pengguna</div>
+                        <p>Berdasarkan survei efisiensi layanan biro umum tahun 2024.</p>
+                        <div class="mini-chart">
+                            <div class="bar" style="height: 60%"></div>
+                            <div class="bar" style="height: 80%"></div>
+                            <div class="bar" style="height: 40%"></div>
+                            <div class="bar active" style="height: 100%"></div>
+                            <div class="bar" style="height: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Kontak -->
+        <footer id="kontak">
+            <div class="container footer-content">
+                <div class="footer-col">
+                    <div class="brand-logo footer-logo">
+                        <img src="images/logo-uin.png" alt="Logo UIN">
+                        <strong>UIN Ar-Raniry</strong>
+                    </div>
+                    <p>Jl. Syeikh Abdur Rauf, Kopelma Darussalam, Kec. Syiah Kuala, Kota Banda Aceh, Aceh 23111</p>
+                    <div style="margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                        <p><i class="ph ph-envelope"></i> biro.umum@ar-raniry.ac.id</p>
+                        <p><i class="ph ph-phone"></i> +62 651 123456</p>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Navigasi</h4>
+                    <a href="#beranda">Beranda</a>
+                    <a href="#jadwal">Jadwal</a>
+                    <a href="#fasilitas">Fasilitas</a>
+                    <a href="login.html">Login Admin</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Bantuan</h4>
+                    <a href="#">Panduan Booking</a>
+                    <a href="#">Syarat & Ketentuan</a>
+                    <a href="#">Lapor Masalah</a>
+                </div>
+                <div class="footer-col newsletter">
+                    <h4>Tetap Terhubung</h4>
+                    <p>Dapatkan informasi terbaru mengenai fasilitas kampus.</p>
+                    <form onsubmit="event.preventDefault(); alert('Terima kasih telah berlangganan!');">
+                        <div class="input-group">
+                            <input type="email" placeholder="Email Anda" required>
+                            <button type="submit"><i class="ph ph-paper-plane-right"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="container footer-bottom">
+                <p>&copy; 2025 Biro Umum UIN Ar-Raniry. All rights reserved.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

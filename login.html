@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Admin - UIN Ar-Raniry</title>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: var(--bg-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .login-card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .login-logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-logo img {
+            height: 60px;
+            margin: 0 auto;
+        }
+
+        .login-card h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .back-link {
+            margin-top: 1.5rem;
+            display: inline-block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <div class="login-logo">
+            <img src="images/logo-uin.png" alt="Logo UIN">
+        </div>
+        <h1>Login Administrator</h1>
+        <p>Masuk untuk mengelola jadwal dan fasilitas.</p>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Masukkan username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Masukkan password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full">
+                Masuk <i class="ph ph-sign-in"></i>
+            </button>
+            <div class="error-msg" id="errorMsg">Username atau password salah!</div>
+        </form>
+
+        <a href="index.html" class="back-link">Kembali ke Beranda</a>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            // Simple validation as per user request (Password: 1122)
+            // Accepting any username for now, or we could enforce 'admin'
+            if (password === '1122') {
+                // Successful login
+                localStorage.setItem('isAdminLoggedIn', 'true');
+                window.location.href = 'dashboard.html';
+            } else {
+                // Failed login
+                errorMsg.style.display = 'block';
+                // Shake effect
+                const card = document.querySelector('.login-card');
+                card.style.transform = 'translateX(5px)';
+                setTimeout(() => { card.style.transform = 'translateX(-5px)'; }, 50);
+                setTimeout(() => { card.style.transform = 'translateX(5px)'; }, 100);
+                setTimeout(() => { card.style.transform = 'translateX(0)'; }, 150);
+            }
+        });
+    </script>
+</body>
+
+</html>
